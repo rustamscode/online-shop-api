@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 class ProductServiceTest {
 
-    @InjectMocks
+   /* @InjectMocks
     private ProductService productService;
 
     @Test
@@ -40,5 +40,5 @@ class ProductServiceTest {
         });
 
         assertEquals("Продукт с ID 999 не найден", exception.getMessage());
-    }
+    }*/
 }

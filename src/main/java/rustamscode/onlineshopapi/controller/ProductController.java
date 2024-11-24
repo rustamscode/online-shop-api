@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import rustamscode.onlineshopapi.dto.ProductRequest;
 import rustamscode.onlineshopapi.model.Product;
 import rustamscode.onlineshopapi.service.ProductService;
 
@@ -31,14 +32,14 @@ public class ProductController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
+    public ResponseEntity<Product> createProduct(@RequestBody ProductRequest product) {
         Product createdProduct = productService.createProduct(product);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(createdProduct);
     }
 
     @PutMapping("update/{id}")
-    public Product updateProduct(@PathVariable Long id, @RequestBody Product product) {
+    public Product updateProduct(@PathVariable Long id, @RequestBody ProductRequest product) {
         return productService.updateProduct(id, product);
     }
 

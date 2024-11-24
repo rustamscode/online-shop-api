@@ -2,51 +2,62 @@ package rustamscode.onlineshopapi.service;
 
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import rustamscode.onlineshopapi.dto.ProductRequest;
 import rustamscode.onlineshopapi.exception.ProductNotFoundException;
 import rustamscode.onlineshopapi.model.Product;
+import rustamscode.onlineshopapi.repository.ProductRepository;
 
-import java.util.ArrayList;
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductService {
-    final Map<Long, Product> productStore = new ConcurrentHashMap<>();
-    final AtomicLong idCounter = new AtomicLong(1);
+    final ProductRepository productRepository;
+
+    @Autowired
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 
     public List<Product> getAllProducts() {
-        return new ArrayList<>(productStore.values());
+        return productRepository.findAll();
     }
 
     public Product getProductById(Long id) {
-        return Optional.ofNullable(productStore.get(id))
+        return productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException(id));
     }
 
-    public Product createProduct(Product product) {
-        product.setId(idCounter.getAndIncrement());
-        productStore.put(product.getId(), product);
+    public Product createProduct(ProductRequest productRequest) {
+        Product product = new Product();
+
+        product.setName(productRequest.getName());
+        product.setInfo(productRequest.getInfo());
+        product.setPrice(BigDecimal.valueOf(productRequest.getPrice()));
+        product.setAvailable(productRequest.isAvailable());
+
+        productRepository.save(product);
         return product;
     }
 
-    public Product updateProduct(Long id, Product updatedProduct) {
+    public Product updateProduct(Long id, ProductRequest productRequest) {
         Product existingProduct = getProductById(id);
-        existingProduct.setName(updatedProduct.getName());
-        existingProduct.setInfo(updatedProduct.getInfo());
-        existingProduct.setPrice(updatedProduct.getPrice());
-        existingProduct.setAvailable(updatedProduct.isAvailable());
-        return existingProduct;
+
+        existingProduct.setName(productRequest.getName());
+        existingProduct.setInfo(productRequest.getInfo());
+        existingProduct.setPrice(BigDecimal.valueOf(productRequest.getPrice()));
+        existingProduct.setAvailable(productRequest.isAvailable());
+
+        return productRepository.save(existingProduct);
     }
 
     public void deleteProduct(Long id) {
-        if (!productStore.containsKey(id)) {
+        if (!productRepository.existsById(id)) {
             throw new ProductNotFoundException(id);
         }
-        productStore.remove(id);
+        productRepository.deleteById(id);
     }
 }

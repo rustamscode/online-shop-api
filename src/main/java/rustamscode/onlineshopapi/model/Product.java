@@ -20,17 +20,10 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(nullable = false, length = 255)
     String name;
-
-    @Column(length = 4096)
     String info;
-
-    @Column(nullable = false)
     BigDecimal price = BigDecimal.valueOf(0);
-
-    @Column(nullable = false)
-    boolean available;
+    boolean available = false;
 
 }
 

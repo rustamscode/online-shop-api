@@ -25,6 +25,19 @@ public class ProductController {
         return productService.getAllProducts();
     }
 
+    @GetMapping("/filter")
+    public List<Product> getFilteredAndSortedProducts(@RequestParam(required = false) String name,
+                                                      @RequestParam(required = false) Double minPrice,
+                                                      @RequestParam(required = false) Double maxPrice,
+                                                      @RequestParam(required = false, defaultValue = "true") Boolean available,
+                                                      @RequestParam(required = false, defaultValue = "name") String sortBy,
+                                                      @RequestParam(required = false, defaultValue = "asc") String sortDirection,
+                                                      @RequestParam(required = false, defaultValue = "5") Integer limit
+    ) {
+        return productService.getFilteredAndSortedProducts(name, minPrice, maxPrice, available, sortBy, sortDirection, limit);
+    }
+
+
     @GetMapping("/{id}")
     public Product getProductById(@PathVariable Long id) {
         return productService.getProductById(id);

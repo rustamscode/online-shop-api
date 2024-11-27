@@ -70,7 +70,7 @@ class ProductServiceTest {
     @Test
     @DisplayName("Тест на проверку создания нового продукта и добавления его в БД")
     void shouldCreateProduct() {
-        ProductRequest productRequest = new ProductRequest("Product D", "Description D", 200, true);
+        ProductRequest productRequest = new ProductRequest("Product D", "Description D", 200);
 
         Product result = productService.createProduct(productRequest);
 
@@ -133,7 +133,5 @@ class ProductServiceTest {
         assertEquals("Product A", filtered.get(1).getName());
         assertEquals("Product C", filtered.get(2).getName());
     }
-
-
 }
 

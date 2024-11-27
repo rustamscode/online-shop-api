@@ -6,4 +6,6 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
 
     <include file="db/changelog/changes/001_create_products_table.sql"/>
+    <include file="db/changelog/changes/002_create_sales_table.sql"/>
+    <include file="db/changelog/changes/003_create_supplies_table.sql"/>
 </databaseChangeLog>

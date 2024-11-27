@@ -29,5 +29,4 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                                 @Param("sortDirection") String sortDirection,
                                 @Param("limit") Integer limit);
 
-
 }

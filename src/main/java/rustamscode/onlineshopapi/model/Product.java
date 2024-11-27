@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.Formula;
 
 import java.math.BigDecimal;
 
@@ -23,7 +24,9 @@ public class Product {
     String name;
     String info;
     BigDecimal price = BigDecimal.valueOf(0);
-    boolean available = false;
+    long stock;
 
+    @Formula("(stock > 0)")
+    boolean available;
 }
 

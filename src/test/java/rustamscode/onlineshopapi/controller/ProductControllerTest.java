@@ -1,7 +1,10 @@
 package rustamscode.onlineshopapi.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -23,29 +26,31 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(ProductController.class)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 class ProductControllerTest {
 
     @Autowired
-    private MockMvc mockMvc;
+    MockMvc mockMvc;
 
     @MockitoBean
-    private ProductService productService;
+    ProductService productService;
 
     @Autowired
-    private ObjectMapper objectMapper;
+    ObjectMapper objectMapper;
 
-    private Product product1;
-    private Product product2;
-    private List<Product> productList;
+    Product product1;
+    Product product2;
+    List<Product> productList;
 
     @BeforeEach
     void setUp() {
-        product1 = new Product(1L, "Product A", "Description A", BigDecimal.valueOf(1900), true);
-        product2 = new Product(2L, "Product B", "Description B", BigDecimal.valueOf(1200), true);
+        product1 = new Product(1L, "Product A", "Description A", BigDecimal.valueOf(1900), 5, true);
+        product2 = new Product(2L, "Product B", "Description B", BigDecimal.valueOf(1200), 2, true);
         productList = Arrays.asList(product1, product2);
     }
 
     @Test
+    @DisplayName("Проверка получения всех продуктов по адресу \"/products\"")
     void testGetAllProducts() throws Exception {
         when(productService.getAllProducts()).thenReturn(productList);
 
@@ -60,6 +65,8 @@ class ProductControllerTest {
     }
 
     @Test
+    @DisplayName("Проверка получения отфильтрованных и отсортированных продуктов" +
+            "по адресу \"/products/filter\" с передачей фильтров в параметры запроса")
     void testGetFilteredAndSortedProducts() throws Exception {
         when(productService.getFilteredAndSortedProducts(any(), any(), any(), any(), any(), any(), any()))
                 .thenReturn(productList);
@@ -79,6 +86,8 @@ class ProductControllerTest {
     }
 
     @Test
+    @DisplayName("Проверка получения продукта по ID по адресу \"/products/{id}\", где {id}" +
+            "является переменной пути для запроса")
     void testGetProductById() throws Exception {
         when(productService.getProductById(product1.getId())).thenReturn(product1);
 
@@ -91,9 +100,11 @@ class ProductControllerTest {
     }
 
     @Test
+    @DisplayName("Проверка успешного создания продукта по адресу /products/create с" +
+            " передачей ProductRequest (DTO) в тело запроса")
     void testCreateProduct() throws Exception {
-        ProductRequest request = new ProductRequest("New Product", "New Description", 300.0, true);
-        Product createdProduct = new Product(3L, "New Product", "New Description",  BigDecimal.valueOf(300.0), true);
+        ProductRequest request = new ProductRequest("New Product", "New Description", 300.0);
+        Product createdProduct = new Product(3L, "New Product", "New Description", BigDecimal.valueOf(300.0), 5, true);
 
         when(productService.createProduct(any(ProductRequest.class))).thenReturn(createdProduct);
 
@@ -108,9 +119,12 @@ class ProductControllerTest {
     }
 
     @Test
+    @DisplayName("Проверка успешного обновления продукта по его ID по " +
+            "адресу \"/products/update/{id}\", где {id} является переменной пути " +
+            "для запроса, необходимо передавать ProductRequest (DTO) в тело запроса")
     void testUpdateProduct() throws Exception {
-        ProductRequest updateRequest = new ProductRequest("Updated Product", "Updated Description", 400.0, false);
-        Product updatedProduct = new Product(1L, "Updated Product", "Updated Description", BigDecimal.valueOf(400.0), false);
+        ProductRequest updateRequest = new ProductRequest("Updated Product", "Updated Description", 400.0);
+        Product updatedProduct = new Product(1L, "Updated Product", "Updated Description", BigDecimal.valueOf(400.0), 5, true);
 
         when(productService.updateProduct(eq(product1.getId()), any(ProductRequest.class))).thenReturn(updatedProduct);
 
@@ -125,6 +139,8 @@ class ProductControllerTest {
     }
 
     @Test
+    @DisplayName("Проверка успешного удаления продукта по адрсесу /products/delete/{id}, где" +
+            "{id} является переменной пути для запроса")
     void testDeleteProduct() throws Exception {
         doNothing().when(productService).deleteProduct(product1.getId());
 

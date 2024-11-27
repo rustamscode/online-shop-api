@@ -1,5 +1,7 @@
 package rustamscode.onlineshopapi.controller;
 
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +14,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/products")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductController {
-    private final ProductService productService;
+    final ProductService productService;
 
     @Autowired
     public ProductController(ProductService productService) {
@@ -45,9 +48,9 @@ public class ProductController {
 
     @PostMapping("/create")
     public ResponseEntity<Product> createProduct(@RequestBody ProductRequest product) {
-        Product createdProduct = productService.createProduct(product);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(createdProduct);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(productService.createProduct(product));
     }
 
     @PutMapping("update/{id}")

@@ -40,10 +40,8 @@ public class ProductService {
         product.setName(productRequest.getName());
         product.setInfo(productRequest.getInfo());
         product.setPrice(BigDecimal.valueOf(productRequest.getPrice()));
-        product.setAvailable(productRequest.isAvailable());
 
-        productRepository.save(product);
-        return product;
+        return productRepository.save(product);
     }
 
     public Product updateProduct(Long id, @Valid ProductRequest productRequest) {
@@ -52,7 +50,6 @@ public class ProductService {
         existingProduct.setName(productRequest.getName());
         existingProduct.setInfo(productRequest.getInfo());
         existingProduct.setPrice(BigDecimal.valueOf(productRequest.getPrice()));
-        existingProduct.setAvailable(productRequest.isAvailable());
 
         return productRepository.save(existingProduct);
     }
@@ -65,7 +62,7 @@ public class ProductService {
     }
 
     public List<Product> getFilteredAndSortedProducts(String name, Double minPrice, Double maxPrice,
-                                               Boolean available, String sortBy, String sortDirection, Integer limit) {
+                                                      Boolean available, String sortBy, String sortDirection, Integer limit) {
         if (name != null && name.length() > 255) {
             throw new IllegalArgumentException("Название товара слишком длинное");
         }
@@ -88,5 +85,4 @@ public class ProductService {
         return productRepository.filterAndSort(
                 name, minPrice, maxPrice, available, sortBy, sortDirection, limit);
     }
-
 }

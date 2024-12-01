@@ -17,7 +17,6 @@ import java.util.List;
 
 @Service
 @Validated
-@Transactional
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SupplyService {
     final SupplyRepository supplyRepository;
@@ -41,6 +40,7 @@ public class SupplyService {
                 .orElseThrow(() -> new SupplyNotFoundException(id));
     }
 
+    @Transactional
     public Supply createSupply(@Valid SupplyRequest supplyRequest) {
         Long productId = supplyRequest.getProductId();
         int amount = supplyRequest.getAmount();

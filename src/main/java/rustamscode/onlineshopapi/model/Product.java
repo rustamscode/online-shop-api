@@ -10,11 +10,11 @@ import org.hibernate.annotations.Formula;
 
 import java.math.BigDecimal;
 
+@Data
 @Entity
 @Table(name = "products")
-@Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Product {
     @Id

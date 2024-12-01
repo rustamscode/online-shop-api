@@ -9,8 +9,8 @@ import lombok.experimental.FieldDefaults;
 @Table(name = "supplies")
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Supply {
     @Id

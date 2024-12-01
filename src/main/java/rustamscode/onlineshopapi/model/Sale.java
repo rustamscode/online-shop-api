@@ -10,8 +10,8 @@ import java.math.BigDecimal;
 @Table(name = "sales")
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Sale {
     @Id

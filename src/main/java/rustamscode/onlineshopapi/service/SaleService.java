@@ -19,7 +19,6 @@ import java.util.List;
 
 @Service
 @Validated
-@Transactional
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SaleService {
     final SaleRepository saleRepository;
@@ -44,6 +43,7 @@ public class SaleService {
                 .orElseThrow(() -> new SaleNotFoundException(id));
     }
 
+    @Transactional
     public Sale createSale(@Valid SaleRequest saleRequest) {
         Long productId = saleRequest.getProductId();
         int amount = saleRequest.getAmount();
